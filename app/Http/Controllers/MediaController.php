@@ -16,7 +16,7 @@ class MediaController extends Controller
     public function index()
     {
         $medias = Media::with(['typemedia','contenu'])->get();
-        return view('media.index', compact('medias'));
+        return view('media.Index', compact('medias'));
 
     }
 
