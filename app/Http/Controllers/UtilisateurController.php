@@ -19,7 +19,7 @@ class UtilisateurController extends Controller
     public function index()
     {
         $utilisateurs = Utilisateur::with(['role', 'langue'])->get();
-        return view('Utilisateurs.index', compact('utilisateurs'));
+        return view('Utilisateurs.Index', compact('utilisateurs'));
     }
 
     /**
