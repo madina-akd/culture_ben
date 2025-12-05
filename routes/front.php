@@ -88,7 +88,7 @@ Route::prefix('auteur')->group(function () {
     // Inscription
     Route::get('/register', [AuteurAuthController::class, 'showRegistrationForm'])->name('auteur.register');
     Route::post('/register', [AuteurAuthController::class, 'register']);
-    Route::get('/auteurdashboard', [AuteurDashboardController::class, 'index'])->name('dash');
+    Route::get('/auteurdashboard', [AuteurDashboardController::class, 'index'])->name('auteur.dashboard');
      
     // Connexion
     Route::get('/login', [AuteurAuthController::class, 'showLoginForm'])->name('auteur.login');
