@@ -85,11 +85,3 @@ Route::middleware(['web', 'auth', 'admin'])->group(function () {
     Route::put('password', [PasswordController::class, 'update'])->name('admin.password.update');
 });
 
-// Routes pour les auteurs
-Route::middleware(['web', 'auth', 'auteur'])->group(function () {
-    Route::get('/auteur/dashboard', function () {
-        return view('auteur.dashboard');
-    })->name('auteur.dashboard');
-    
-    // Ajoutez ici les routes spécifiques aux auteurs
-});
