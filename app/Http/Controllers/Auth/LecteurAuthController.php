@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+
 class LecteurAuthController extends Controller
 {
     /**
@@ -31,24 +32,25 @@ class LecteurAuthController extends Controller
             'sexe' => 'required|in:masculin,feminin',
         ]);
 
-        // Créer l'utilisateur avec le rôle lecteur (id_role = 4)
+
         $lecteur = Utilisateur::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'email' => $request->email,
-            'mot_de_passe' => $request->mot_de_passe,
+            'mot_de_passe' => Hash::make($request->mot_de_passe), // HASH ici !
             'id_role' => 5, 
             'id_langue' => 2, 
             'sexe' => $request->sexe,
             'date_inscription' => now(),
-            'statut' => 'validé' // Actif immédiatement
+            'statut' => 'validé'
         ]);
+
 
         // Connecter automatiquement le lecteur
         Auth::guard('web')->login($lecteur);
 
         return redirect()->route('auteur.login')
-                         ->with('success', 'Inscription réussie ! Vous êtes maintenant connecté.');
+                         ->with('success', 'Inscription réussie ! Vous allez maintenant vous connecté.');
     }
 
     /**
