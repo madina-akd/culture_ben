@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-
 class LecteurAuthController extends Controller
 {
     /**
@@ -32,25 +31,24 @@ class LecteurAuthController extends Controller
             'sexe' => 'required|in:masculin,feminin',
         ]);
 
-
+        // Créer l'utilisateur avec le mot de passe hashé
         $lecteur = Utilisateur::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'email' => $request->email,
-            'mot_de_passe' => Hash::make($request->mot_de_passe), // HASH ici !
-            'id_role' => 5, 
-            'id_langue' => 2, 
+            'mot_de_passe' => Hash::make($request->mot_de_passe),
+            'id_role' => 5,
+            'id_langue' => 2,
             'sexe' => $request->sexe,
             'date_inscription' => now(),
             'statut' => 'validé'
         ]);
 
-
         // Connecter automatiquement le lecteur
         Auth::guard('web')->login($lecteur);
 
-        return redirect()->route('lecteur.login')
-                         ->with('success', 'Inscription réussie ! Vous allez maintenant vous connecté.');
+        return redirect()->route('index')
+                         ->with('success', 'Inscription réussie ! Vous êtes maintenant connecté.');
     }
 
     /**
@@ -71,9 +69,15 @@ class LecteurAuthController extends Controller
             'mot_de_passe' => 'required',
         ]);
 
-        $credentials = $request->only('email', 'mot_de_passe');
+        $credentials = [
+            'email' => $request->email,
+            'mot_de_passe' => $request->mot_de_passe,
+            'id_role' => 5
+        ];
 
-        if (Auth::guard('web')->attempt(['email' => $credentials['email'], 'password' => $credentials['mot_de_passe'], 'id_role' => 5])) {
+        // Utiliser le champ mot_de_passe via attempt avec getAuthPassword
+        if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->mot_de_passe, 'id_role' => 5])) {
+            $request->session()->regenerate(); // sécurité
             return redirect()->route('index')
                              ->with('success', 'Connexion réussie !');
         }
@@ -86,9 +90,13 @@ class LecteurAuthController extends Controller
     /**
      * Déconnexion lecteur
      */
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('index')
                          ->with('success', 'Déconnexion réussie.');
     }
