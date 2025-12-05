@@ -67,39 +67,45 @@ class AuteurAuthController extends Controller
     /**
      * Traiter la connexion auteur
      */
-    public function login(Request $request)
+  public function login(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
             'mot_de_passe' => 'required',
         ]);
 
+        // Vérifier l'existence de l'auteur
         $auteur = Utilisateur::where('email', $request->email)
-                              ->where('id_role', 1)
-                              ->first();
+                             ->where('id_role', 1) // rôle auteur
+                             ->first();
 
         if (!$auteur) {
-            return back()->withErrors([
-                'email' => 'Aucun compte auteur trouvé avec cet email.',
-            ])->withInput();
+            return back()->withErrors(['email' => 'Aucun compte auteur trouvé avec cet email.'])
+                         ->withInput();
         }
 
+        // Vérifier le mot de passe
         if (!Hash::check($request->mot_de_passe, $auteur->mot_de_passe)) {
-            return back()->withErrors([
-                'mot_de_passe' => 'Mot de passe incorrect.',
-            ])->withInput();
+            return back()->withErrors(['mot_de_passe' => 'Mot de passe incorrect.'])
+                         ->withInput();
         }
 
+        // Vérifier le statut
         if ($auteur->statut === 'en attente') {
-            return back()->withErrors([
-                'email' => 'Votre compte est en attente de validation par un administrateur.',
-            ])->withInput();
+            return back()->withErrors(['email' => 'Votre compte est en attente de validation par un administrateur.'])
+                         ->withInput();
         }
 
-     
+        // Connexion via le guard 'auteur'
+        Auth::guard('auteur')->login($auteur);
 
+        // Régénérer la session
+        $request->session()->regenerate();
+
+        // Redirection vers le dashboard auteur
         return redirect()->route('auteur.dashboard')->with('success', 'Connexion réussie !');
     }
+
 
     /**
      * Déconnexion auteur
