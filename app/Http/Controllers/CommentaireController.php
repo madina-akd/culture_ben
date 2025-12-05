@@ -15,7 +15,7 @@ class CommentaireController extends Controller
     public function index()
     {
         $commentaires = Commentaire::with(['utilisateur','contenu'])->get();
-        return view('commentaire.index', compact('commentaires'));
+        return view('commentaire.Index', compact('commentaires'));
     }
 
     /**
