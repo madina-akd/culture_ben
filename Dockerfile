@@ -20,11 +20,12 @@ RUN composer install --no-dev --optimize-autoloader
 RUN chown -R www-data:www-data /var/www
 RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-RUN php artisan config:clear
-RUN php artisan cache:clear
+# Configurer les cookies (important pour les sessions Railway)
+RUN echo "session.cookie_samesite = None" >> /usr/local/etc/php/conf.d/session.ini
+RUN echo "session.cookie_secure = On" >> /usr/local/etc/php/conf.d/session.ini
 
 # Exposer le port 8080 pour Railway
 EXPOSE 8080
 
-# Lancer Laravel en production
+# Lancer Laravel
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
