@@ -62,29 +62,28 @@ class LecteurAuthController extends Controller
     /**
      * Traiter la connexion lecteur
      */
-    public function login(Request $request)
+   public function login(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
             'mot_de_passe' => 'required',
         ]);
-
-        $credentials = [
-            'email' => $request->email,
-            'mot_de_passe' => $request->mot_de_passe,
-            'id_role' => 5
-        ];
-
-        // Utiliser le champ mot_de_passe via attempt avec getAuthPassword
-        if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->mot_de_passe, 'id_role' => 5])) {
-            $request->session()->regenerate(); // sécurité
-            return redirect()->route('index')
-                             ->with('success', 'Connexion réussie !');
+    
+        $lecteur = Utilisateur::where('email', $request->email)
+                            ->where('id_role', 5)
+                            ->first();
+    
+        if (!$lecteur || !Hash::check($request->mot_de_passe, $lecteur->mot_de_passe)) {
+            return back()->withErrors([
+                'email' => 'Identifiants incorrects ou vous n\'êtes pas inscrit en tant que lecteur.',
+            ]);
         }
-
-        return back()->withErrors([
-            'email' => 'Identifiants incorrects ou vous n\'êtes pas inscrit en tant que lecteur.',
-        ]);
+    
+        // Connexion manuelle
+        Auth::guard('web')->login($lecteur);
+        $request->session()->regenerate();
+    
+        return redirect()->route('index')->with('success', 'Connexion réussie !');
     }
 
     /**
