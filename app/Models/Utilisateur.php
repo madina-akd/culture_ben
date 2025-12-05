@@ -46,7 +46,7 @@ class Utilisateur extends Authenticatable
     /**
      * ⚠️ Indiquer à Laravel que la colonne du mot de passe est "mot_de_passe"
      */
-    public function getAuthPassword()
+    public function getAuthPasswordName()
     {
         return $this->mot_de_passe;
     }
