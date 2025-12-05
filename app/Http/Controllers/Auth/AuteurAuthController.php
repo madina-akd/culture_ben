@@ -38,6 +38,7 @@ class AuteurAuthController extends Controller
             'email' => $request->email,
             'mot_de_passe' => $request->mot_de_passe, // Mutator hash automatiquement
             'id_role' => 1,
+            'id_langue'=> 2,
             'sexe' => $request->sexe,
             'date_inscription' => now(),
             'statut' => 'en attente', // Ou 'validé' si tu veux valider directement
