@@ -1,7 +1,7 @@
 @extends('lecteur.layouts')
 
 @section('style')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-sA+e2XgqQjH1f9gq8kq2n0b3G+KxQY1Z4f6bM2w5r1w=" crossorigin=""/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/panolens@0.12.0/build/panolens.min.css">
 <style>
 html,body,#map { height: 100%; margin: 0; padding: 0; }
@@ -179,10 +179,37 @@ body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neu
                     <span class="text-white font-semibold">Côte Atlantique</span>
                 </div>
             </div>
-            <!-- autres images... -->
-        </div>
-    </div>
+            <div class="relative group overflow-hidden rounded-xl border border-beige-200"> 
+                <div class="relative"> 
+                    <div class="absolute inset-0 bg-gradient-to-b from-amber-500/10 to-amber-600/20 z-10"> </div>
+                    <img src="{{asset('assets/images/no.jpg')}}" alt="Nord Bénin" class="w-full h-48 object-cover group-hover:scale-110 transition duration-500"> 
+                </div>
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"> 
+                    <span class="text-white font-semibold">Nord Bénin</span>
+                </div>
+            </div>
+            <div class="relative group overflow-hidden rounded-xl border border-beige-200">
+                <div class="relative"> 
+                    <div class="absolute inset-0 bg-gradient-to-b from-amber-500/10 to-amber-600/20 z-10"></div> 
+                    <img src="{{asset('assets/images/R.jpg')}}" alt="Région Centrale" class="w-full h-48 object-cover group-hover:scale-110 transition duration-500"> 
+                </div> 
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"> 
+                    <span class="text-white font-semibold">Région Centrale</span> 
+                </div> 
+            </div> 
+            <div class="relative group overflow-hidden rounded-xl border border-beige-200">
+                <div class="relative"> 
+                    <div class="absolute inset-0 bg-gradient-to-b from-amber-500/10 to-amber-600/20 z-10"></div>
+                    <img src="{{asset('assets/images/sud.jpg')}}" alt="Sud-Ouest" class="w-full h-48 object-cover group-hover:scale-110 transition duration-500"> 
+                </div> 
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span class="text-white font-semibold">Sud-Ouest</span> 
+                </div> 
+            </div>
+        </div> 
+    </div> 
 </section>
+            <!-- autres images... -->
 
 <!-- Section Images 360° -->
 <section class="py-20 bg-white" id="galerie-360">
@@ -214,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Panolens 360
     const panoramaContainer = document.getElementById('panorama-360');
     if(panoramaContainer) {
-        const panorama = new PANOLENS.ImagePanorama('{{ asset("assets/images/360/benin360.jpg") }}');
+        const panorama = new PANOLENS.ImagePanorama("{{ asset('assets/images/360/benin360.jpg') }}");
         const viewer = new PANOLENS.Viewer({ container: panoramaContainer, output: 'console', autoHideInfospot: false });
         viewer.add(panorama);
     }
