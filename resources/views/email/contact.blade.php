@@ -46,7 +46,7 @@
             
             <h3>Message :</h3>
             <div class="message-box">
-                {!! nl2br(e($message)) !!}
+                {!! nl2br(e($contenuMessage)) !!}
             </div>
         </div>
         
