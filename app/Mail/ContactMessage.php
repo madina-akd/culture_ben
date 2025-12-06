@@ -46,7 +46,7 @@ class ContactMessage extends Mailable
                 'nom' => $this->contactData['nom'],
                 'email' => $this->contactData['email'],
                 'sujet' => $this->contactData['sujet'],
-                'message' => $this->contactData['message'],
+                'contenuMessage' => $this->contactData['message'],
             ]
         );
     }
